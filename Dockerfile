@@ -22,5 +22,5 @@ RUN npm run build
 RUN chmod +x docker/entrypoint.sh
 
 # publish app
-EXPOSE 3001
+EXPOSE 8120
 ENTRYPOINT [ "docker/entrypoint.sh" ]
