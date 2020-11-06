@@ -41,7 +41,7 @@ class QueryManager extends Component {
 
   componentDidUpdate() {
     var query = this.props.match.params.query
-
+    
     if(query && this.state.query !== query) {
       // query is set but does not match the information in the state
       this.setState({
@@ -88,6 +88,7 @@ class QueryManager extends Component {
 
   render() {
     const { classes } = this.props;
+    const readableQuery = this.state.query.replaceAll('%2F', '/')
 
     return (
       <Fragment>
@@ -97,7 +98,7 @@ class QueryManager extends Component {
             this.state.result.features.length !== 0 ? (
             // endpoint provided information to present
             <Fragment>
-              <Typography variant="h4" component="h2" gutterBottom> Result for {this.state.query} </Typography>
+              <Typography variant="h4" component="h2" gutterBottom> Result for {readableQuery} </Typography>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>

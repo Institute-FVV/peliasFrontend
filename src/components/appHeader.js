@@ -80,10 +80,12 @@ class AppHeader extends Component {
   }
   
   render(){
-    const { classes, query } = this.props
+    const { classes } = this.props
+    let { query } = this.props
 
     if(query && this.state.query === "") {
       // query prsent, but state not updated
+      query = query.replaceAll('%2F', '/')
       this.setState({ query: query})
     }
 

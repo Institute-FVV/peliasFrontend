@@ -31,7 +31,8 @@ class App extends Component {
   }
 
   handleSubmit(query) {
-    this.setState({ query: query})
+    let tempQuery = query.replaceAll('/', '%2F')
+    this.setState({ query: tempQuery})
   }
 
   render() {
