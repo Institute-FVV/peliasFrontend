@@ -41,17 +41,23 @@ const styles = theme => ({
     padding: theme.spacing(1)
   },
   queryInput: {
-    marginLeft: theme.spacing(30),
+    marginLeft: theme.spacing(1),
     backgroundColor: "white",
     width: theme.spacing(150),
-    [theme.breakpoints.down('xs')]: {
-      marginLeft: theme.spacing(1),
-      width: theme.spacing(15)
+    [theme.breakpoints.down('lg')]: {
+      width: theme.spacing(120)
+    },
+    [theme.breakpoints.down('md')]: {
+      width: theme.spacing(80)
     },
     [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: theme.spacing(50)
-    }
+      width: theme.spacing(30)
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: theme.spacing(20)
+    },
+    
+    
   }
 })
 
