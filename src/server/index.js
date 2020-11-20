@@ -19,3 +19,8 @@ app.use(express.static(path.join(publicFolder, 'build')));
 app.listen(port, () => {
   console.log(`geoencoding listening at http://localhost:${port}`)
 })
+
+// forward all requests to the react app
+app.get('*', function(req, res) {
+  res.sendFile(path.join(publicFolder, 'build', 'index.html'));
+});
