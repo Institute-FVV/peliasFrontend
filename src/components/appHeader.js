@@ -6,7 +6,6 @@ import {
   Button,
   Typography,
   withStyles,
-  TextField
 } from '@material-ui/core';
 import MapIcon from '@material-ui/icons/Map';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
@@ -26,6 +25,13 @@ const styles = theme => ({
       right: theme.spacing(2),
     },
   },
+  link: {
+    fontSize: '1.5em',
+    color: 'white',
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    textDecoration: 'none'
+  },
   text: {
     fontSize: '4.5em',
     color: 'white',
@@ -39,46 +45,12 @@ const styles = theme => ({
   },
   toolBar: {
     padding: theme.spacing(1)
-  },
-  queryInput: {
-    marginLeft: theme.spacing(1),
-    backgroundColor: "white",
-    width: theme.spacing(150),
-    [theme.breakpoints.down('lg')]: {
-      width: theme.spacing(120)
-    },
-    [theme.breakpoints.down('md')]: {
-      width: theme.spacing(80)
-    },
-    [theme.breakpoints.down('sm')]: {
-      width: theme.spacing(30)
-    },
-    [theme.breakpoints.down('xs')]: {
-      width: theme.spacing(20)
-    },
-    
-    
   }
 })
 
 class AppHeader extends Component {
   constructor() {
     super()
-    this.state = {
-      query: ""
-    }
-  }
-  
-  handleSubmit = evt => {
-    const { handleSubmit } = this.props
-    evt.preventDefault()
-    handleSubmit(this.state.query)
-  }
-  
-  handleQueryChange = evt => {
-    this.setState({
-      query: evt.target.value
-    })
   }
 
   renderHelp() {
@@ -87,13 +59,6 @@ class AppHeader extends Component {
   
   render(){
     const { classes } = this.props
-    let { query } = this.props
-
-    if(query && this.state.query === "") {
-      // query prsent, but state not updated
-      query = query.replaceAll('%2F', '/')
-      this.setState({ query: query})
-    }
 
     return (
       <AppBar position="static">
@@ -105,21 +70,8 @@ class AppHeader extends Component {
             </Typography>
           </Button>
 
-
-          <form onSubmit={this.handleSubmit}>
-            <TextField
-              required 
-              type="text"
-              key="inputQuery"
-              placeholder="Gusshausstrasse 30"
-              className={classes.queryInput}
-              value={this.state.query}
-              onChange={this.handleQueryChange}
-              variant="outlined"
-              size="small"
-              autoFocus 
-            />
-          </form>
+          <Link className={classes.link} to="/query">Forward</Link>
+          <Link className={classes.link} to="/reversequery">Reverse</Link>
 
           <Button 
             component={Link}

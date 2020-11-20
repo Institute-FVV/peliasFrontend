@@ -29,48 +29,55 @@ const styles = theme => ({
   queryInput: {
     marginLeft: theme.spacing(1),
     backgroundColor: "white",
-    width: theme.spacing(150),
-    [theme.breakpoints.down('lg')]: {
-      width: theme.spacing(120)
-    },
-    [theme.breakpoints.down('md')]: {
-      width: theme.spacing(80)
-    },
+    width: theme.spacing(40),
     [theme.breakpoints.down('sm')]: {
-      width: theme.spacing(30)
-    },
-    [theme.breakpoints.down('xs')]: {
       width: theme.spacing(20)
     },
+    [theme.breakpoints.down('xs')]: {
+      width: theme.spacing(10)
+    },
+  },
+  submitButton: {
+    visibility: 'hidden'
   }
 });
 
-class QueryManager extends Component {
+class ReverseQueryManager extends Component {
   constructor() {
     super();
     this.state = {
       loading: false,
-      query: "",
+      query_x: "",
+      query_y: "",
       result: "",
       error: null,
     };
   }
 
   componentDidMount() {
-    var query = this.props.match.params.query
+    // extract get from search parameters from url
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    
+    if(params.get('point.lon')) {
+      // paremters present
+      var query_x = params.get('point.lon')
+      var query_y =params.get('point.lat')
 
-    if(query && this.state.query !== query) {
-      // query is set but does not match the information in the state
-      this.setState({
-        loading: true,
-        query: query
-      }, this.executeQuery)
+      if(this.state.query_x !== query_x || this.state.query_y !== query_y) {
+        // query is set but does not match the information in the state
+        this.setState({
+          loading: true,
+          query_x: query_x,
+          query_y: query_y
+        }, this.executeQuery)
+      }
     } 
   }
 
   async fetch(method, endpoint, body) {
     try {
-      const response = await fetch(`${pelias_url}search?text=${endpoint}`, {
+      const response = await fetch(`${pelias_url}reverse?${endpoint}`, {
         method,
         body: body && JSON.stringify(body),
         headers: {
@@ -87,12 +94,14 @@ class QueryManager extends Component {
   }
 
   async executeQuery() {
-    let result = (await this.fetch('get', this.state.query)) || [] 
+    // build url for get request, execute it
+    let query = "point.lon=" + this.state.query_x + "&point.lat=" + this.state.query_y
+    let result = (await this.fetch('get', query)) || [] 
 
     if(result.features.length === 0) {
       // no information could be returned by the endpoint
       this.setState({ 
-        error: "for the given address no data could be queried",
+        error: "for the given coordinates no data could be queried",
         loading: false
       })
     }
@@ -106,24 +115,21 @@ class QueryManager extends Component {
   handleSubmit = evt => {
     const { history } = this.props;
 
-    // push information into history, so exportable
-    history.push("/query/" + this.state.query)
+    // push information into history, so exportable    
+    history.push("/reversequery/?point.lon=" + this.state.query_x + "&point.lat=" + this.state.query_y)
     
     evt.preventDefault()
     this.executeQuery()
   }
-  
+
   handleQueryChange = evt => {
     this.setState({
-      query: evt.target.value
-    })
+      [evt.target.name]: evt.target.value
+    });
   }
 
   render() {
     const { classes } = this.props;
-
-    // revert escaped slashes
-    const readableQuery = this.state.query.replaceAll('%2F', '/')
 
     return (
       <Fragment>
@@ -131,43 +137,39 @@ class QueryManager extends Component {
           <TextField
             required 
             type="text"
-            key="inputQuery"
-            placeholder="Gusshausstrasse 30"
+            key="query_x"
+            name="query_x"
+            placeholder="X.x"
             className={classes.queryInput}
-            value={this.state.query}
+            value={this.state.query_x}
             onChange={this.handleQueryChange}
             variant="outlined"
             size="small"
             autoFocus 
           />
+          <TextField
+            required 
+            type="text"
+            key="query_y"
+            name="query_y"
+            placeholder="Y.y"
+            className={classes.queryInput}
+            value={this.state.query_y}
+            onChange={this.handleQueryChange}
+            variant="outlined"
+            size="small"
+            autoFocus 
+          />
+           <button className={classes.submitButton} type="submit">Submit</button>
         </form>
         {
           this.state.result !== "" ? (
             // result present
             this.state.result.features.length !== 0 ? (
+              
             // endpoint provided information to present
             <Fragment>
-              <Typography variant="h4" component="h2" gutterBottom> Result for {readableQuery} </Typography>
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Geometry </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell width={"40%"}>X</TableCell>
-                      <TableCell>{this.state.result.features[0].geometry.coordinates[0]}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell width={"40%"}>Y</TableCell>
-                      <TableCell>{this.state.result.features[0].geometry.coordinates[1]}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-
+              <Typography variant="h4" component="h2" gutterBottom> Result for point.lon {this.state.query_x} and point.lat {this.state.query_y} </Typography>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
@@ -220,18 +222,6 @@ class QueryManager extends Component {
                       <TableCell width={"40%"}>Confidence</TableCell>
                       <TableCell>{this.state.result.features[0].properties.confidence}</TableCell>
                     </TableRow>
-                    <TableRow>
-                      <TableCell width={"40%"}>Parsed text - postal code</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.postalcode}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell width={"40%"}>Parsed text - street</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.street}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell width={"40%"}>Parsed text - housenumber</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.housenumber}</TableCell>
-                    </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -260,4 +250,4 @@ class QueryManager extends Component {
 export default compose(
   withRouter,
   withStyles(styles),
-)(QueryManager);
+)(ReverseQueryManager);
