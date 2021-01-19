@@ -130,8 +130,6 @@ class QueryManager extends Component {
     // revert escaped slashes
     const readableQuery = this.state.query.replaceAll('%2F', '/')
 
-    console.log(this.state)
-
     return (
       <Fragment>
         <form onSubmit={this.handleSubmit}>

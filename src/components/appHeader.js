@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -49,8 +49,20 @@ const styles = theme => ({
 })
 
 class AppHeader extends Component {
-  renderHelp() {
-    return <Help/>;
+  constructor() {
+    super()
+
+    this.state = {
+      showHelp: false
+    }
+
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange() {
+    this.setState({
+      showHelp: !this.state.showHelp
+    })
   }
   
   render(){
@@ -70,8 +82,7 @@ class AppHeader extends Component {
           <Link className={ classes.link } to="/reversequery">Reverse</Link>
 
           <Button 
-            component={Link}
-            to="/help"
+            onClick={ this.handleChange }
             className={ classes.headerButton }
           >
             <HelpOutlineIcon 
@@ -80,7 +91,7 @@ class AppHeader extends Component {
               className={ classes.text }
             />
           </Button>
-          <Route exact path="/help" render={this.renderHelp} />
+          <Help handleChange={ this.handleChange } showModal={ this.state.showHelp }/>
         </Toolbar>
       </AppBar>
     )
