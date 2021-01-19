@@ -30,18 +30,24 @@ const styles = theme => ({
     marginTop: theme.spacing(10),
   },
 });
+const APP_VERSION = process.env.REACT_APP_VERSION
 
 const Help = ({ classes, history }) => (
   <Modal
-    className={classes.modal}
-    onClose={() => history.goBack()}
+    className={ classes.modal }
+    onClose={() => history.goBack() }
     open
   >
-    <Card className={`${classes.modalCard} ${classes.marginTop}`}>
-        <CardContent className={classes.modalCardContent}>
-          <Typography>
-            Das ist ein schöner Hilfstext für dieses fantastische App
-          </Typography>
+    <Card className={`${ classes.modalCard } ${ classes.marginTop }`}>
+        <CardContent className={ classes.modalCardContent }>
+          <Typography variant="h6">About the app</Typography>
+          <Typography> Provides a simple and easy to use interface for the powerful pelias backend. </Typography>
+          <Typography>Two types of queries are possible Forward and Reverse Query</Typography>
+          <Typography>App version: {APP_VERSION}</Typography>
+          <Typography variant="h6">Forward</Typography>
+          <Typography>Forward query the goal is to find the x and y coordinates of a given street. </Typography>
+          <Typography variant="h6">Reverse</Typography>
+          <Typography>Reverse query is the opposite where the goal is to find the address of given x and y coordinates</Typography>
         </CardContent>          
         <CardActions>
           <Button size="small" onClick={() => history.goBack()}><ClearIcon/>Close</Button>

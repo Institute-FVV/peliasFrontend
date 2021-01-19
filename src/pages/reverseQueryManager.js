@@ -46,10 +46,11 @@ class ReverseQueryManager extends Component {
   constructor() {
     super();
     this.state = {
-      loading: false,
       query_x: "",
       query_y: "",
       result: "",
+
+      loading: false,
       error: null,
     };
   }
@@ -67,7 +68,6 @@ class ReverseQueryManager extends Component {
       if(this.state.query_x !== query_x || this.state.query_y !== query_y) {
         // query is set but does not match the information in the state
         this.setState({
-          loading: true,
           query_x: query_x,
           query_y: query_y
         }, this.executeQuery)
@@ -76,8 +76,10 @@ class ReverseQueryManager extends Component {
   }
 
   async fetch(method, endpoint, body) {
+    this.setState({ loading: true })
+
     try {
-      const response = await fetch(`${pelias_url}reverse?${endpoint}`, {
+      const response = await fetch(`${pelias_url}reverse?${ endpoint }`, {
         method,
         body: body && JSON.stringify(body),
         headers: {
@@ -86,10 +88,14 @@ class ReverseQueryManager extends Component {
         },
       });
 
+      this.setState({ loading: false })
       return await response.json();
     } catch (error) {
       console.error(error);
-      this.setState({ error });
+      this.setState({ 
+        error: error,
+        loading: false
+       });
     }
   }
 
@@ -102,13 +108,11 @@ class ReverseQueryManager extends Component {
       // no information could be returned by the endpoint
       this.setState({ 
         error: "for the given coordinates no data could be queried",
-        loading: false
       })
     }
 
     this.setState({ 
-      result: result,
-      loading: false
+      result: result
     });
   }
 
@@ -133,16 +137,16 @@ class ReverseQueryManager extends Component {
 
     return (
       <Fragment>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={ this.handleSubmit }>
           <TextField
             required 
             type="text"
             key="query_x"
             name="query_x"
             placeholder="X.x"
-            className={classes.queryInput}
-            value={this.state.query_x}
-            onChange={this.handleQueryChange}
+            className={ classes.queryInput }
+            value={ this.state.query_x }
+            onChange={ this.handleQueryChange }
             variant="outlined"
             size="small"
             autoFocus 
@@ -153,14 +157,15 @@ class ReverseQueryManager extends Component {
             key="query_y"
             name="query_y"
             placeholder="Y.y"
-            className={classes.queryInput}
-            value={this.state.query_y}
-            onChange={this.handleQueryChange}
+            className={ classes.queryInput }
+            value={ this.state.query_y }
+            onChange={ this.handleQueryChange }
             variant="outlined"
             size="small"
             autoFocus 
           />
-           <button className={classes.submitButton} type="submit">Submit</button>
+
+           <button className={ classes.submitButton } type="submit">Submit</button>
         </form>
         {
           this.state.result !== "" ? (
@@ -169,58 +174,58 @@ class ReverseQueryManager extends Component {
               
             // endpoint provided information to present
             <Fragment>
-              <Typography variant="h4" component="h2" gutterBottom> Result for point.lon {this.state.query_x} and point.lat {this.state.query_y} </Typography>
+              <Typography variant="h4" component="h2" gutterBottom> Result for point.lon { this.state.result.geocoding.query["point.lon"] } and point.lat { this.state.result.geocoding.query["point.lat"] } </Typography>
               <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+                <Table className={ classes.table } aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Properties </TableCell>
+                      <TableCell colSpan={ 2 } className={ classes.headerTable }> Properties </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell width={"40%"}>Postalcode</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.postalcode}</TableCell>
+                      <TableCell width={ "40%" }>Postalcode</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.postalcode }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Country</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.country}</TableCell>
+                      <TableCell width={ "40%" }>Country</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.country }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Country Code</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.country_a}</TableCell>
+                      <TableCell width={ "40%" }>Country Code</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.country_a }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Name</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.name}</TableCell>
+                      <TableCell width={ "40%" }>Name</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.name }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Street</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.street}</TableCell>
+                      <TableCell width={ "40%" }>Street</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.street }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Neighbourhood</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.neighbourhood}</TableCell>
+                      <TableCell width={" 40%" }>Neighbourhood</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.neighbourhood }</TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell width={"40%"}>Region</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.region}</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.region}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
 
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+              <TableContainer component={ Paper }>
+                <Table className={ classes.table } aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Pelias Metadata </TableCell>
+                      <TableCell colSpan={ 2 } className={ classes.headerTable }> Pelias Metadata </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell width={"40%"}>Confidence</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.confidence}</TableCell>
+                      <TableCell width={ "40%" }>Confidence</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.confidence }</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -231,7 +236,7 @@ class ReverseQueryManager extends Component {
              this.state.error ? (
               <ErrorSnackbar
                 onClose={() => this.setState({ error: null })}
-                message={this.state.error}
+                message={ this.state.error }
               />
              ) : ( <div></div>)
            )

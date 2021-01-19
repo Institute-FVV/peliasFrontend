@@ -49,10 +49,6 @@ const styles = theme => ({
 })
 
 class AppHeader extends Component {
-  constructor() {
-    super()
-  }
-
   renderHelp() {
     return <Help/>;
   }
@@ -62,7 +58,7 @@ class AppHeader extends Component {
 
     return (
       <AppBar position="static">
-        <Toolbar className={classes.toolBar}>
+        <Toolbar className={ classes.toolBar }>
           <Button color="inherit" component={Link} to="/">
             <MapIcon/>
             <Typography variant="h6" color="inherit">
@@ -70,18 +66,18 @@ class AppHeader extends Component {
             </Typography>
           </Button>
 
-          <Link className={classes.link} to="/query">Forward</Link>
-          <Link className={classes.link} to="/reversequery">Reverse</Link>
+          <Link className={ classes.link } to="/query">Forward</Link>
+          <Link className={ classes.link } to="/reversequery">Reverse</Link>
 
           <Button 
             component={Link}
             to="/help"
-            className={classes.headerButton}
+            className={ classes.headerButton }
           >
             <HelpOutlineIcon 
               color="secondary"
               aria-label="add"
-              className={classes.text}
+              className={ classes.text }
             />
           </Button>
           <Route exact path="/help" render={this.renderHelp} />

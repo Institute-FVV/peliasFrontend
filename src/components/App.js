@@ -1,10 +1,8 @@
 import React, { Fragment, Component } from 'react';
-import { matchPath } from 'react-router'
-import { withRouter, Route, Redirect } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import {
   CssBaseline,
-  withStyles,
-  Typography
+  withStyles
 } from '@material-ui/core';
 import { compose } from 'recompose';
 
@@ -22,10 +20,6 @@ const styles = theme => ({
 });
 
 class App extends Component {
-  constructor() {
-    super()
-  }
-
   render() {
     const { classes } = this.props
 
@@ -33,12 +27,12 @@ class App extends Component {
         <Fragment>
           <CssBaseline />
           <AppHeader/>
-          <main className={classes.main}>
-            <Route exact path="/" component={QueryManager} />
-            <Route exact path="/query" component={QueryManager} />
-            <Route exact path="/reversequery" component={ReverseQueryManager} />
-            <Route exact path="/query/:query" component={QueryManager} />
-            <Route exact path="/reversequery/:query" component={ReverseQueryManager} />
+          <main className={ classes.main }>
+            <Route exact path="/" component={ QueryManager } />
+            <Route exact path="/query" component={ QueryManager } />
+            <Route exact path="/reversequery" component={ ReverseQueryManager } />
+            <Route exact path="/query/:query" component={ QueryManager } />
+            <Route exact path="/reversequery/:query" component={ReverseQueryManager } />
           </main>
       </Fragment>
     )

@@ -1,4 +1,4 @@
-name: Publish pelisa frontend docker images
+name: Publish pelias frontend docker images
 
 on:
   # Trigger the workflow on push
@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - master
-
 
 jobs:
   push_to_registry:

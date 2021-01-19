@@ -1,4 +1,24 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Simple pelias frontend
+Provides a simple and easy to use frontend for the powerful pelias backend.  
+Both reverse and standard queries are possible.  
+## Scope
+For a different application we have deployed the pelias backend. To provide an userfriendly access we have additionally created this simple UI for pelias.  
+
+## Design
+### Frontend
+Using react in combination with the material design to create a intuitive UI.
+
+![StandardQuery](documentation/exampleQuery.PNG)
+![ReverseQuery](documentation/exampleReverseQuery.PNG)
+
+### Backend
+Pelias docker infrastructure.
+
+# Development
+For the runtime the following env variable can control the application:  
+
+    NODE_ENV=development
+    REACT_APP_PELIAS_URL=https://pelias.host/v1/
 
 ## Available Scripts
 
@@ -36,38 +56,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
-
-
-# 
-https://www.flaticon.com/free-icon/count_2472165?term=count&page=1&position=55
-https://developer.okta.com/blog/2018/07/10/build-a-basic-crud-app-with-node-and-react

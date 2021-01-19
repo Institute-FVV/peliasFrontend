@@ -29,7 +29,7 @@ const styles = theme => ({
   queryInput: {
     marginLeft: theme.spacing(1),
     backgroundColor: "white",
-    width: theme.spacing(150),
+    width: "100%",
     [theme.breakpoints.down('lg')]: {
       width: theme.spacing(120)
     },
@@ -49,9 +49,10 @@ class QueryManager extends Component {
   constructor() {
     super();
     this.state = {
-      loading: false,
       query: "",
       result: "",
+
+      loading: false,
       error: null,
     };
   }
@@ -62,15 +63,16 @@ class QueryManager extends Component {
     if(query && this.state.query !== query) {
       // query is set but does not match the information in the state
       this.setState({
-        loading: true,
         query: query
       }, this.executeQuery)
     } 
   }
 
   async fetch(method, endpoint, body) {
+    this.setState({ loading: true })
+
     try {
-      const response = await fetch(`${pelias_url}search?text=${endpoint}`, {
+      const response = await fetch(`${ pelias_url }search?text=${endpoint}`, {
         method,
         body: body && JSON.stringify(body),
         headers: {
@@ -79,10 +81,15 @@ class QueryManager extends Component {
         },
       });
 
+      this.setState({ loading: false })
       return await response.json();
-    } catch (error) {
+    } 
+    catch (error) {
       console.error(error);
-      this.setState({ error });
+      this.setState({ 
+        error: error,
+        loading: false 
+      });
     }
   }
 
@@ -92,14 +99,12 @@ class QueryManager extends Component {
     if(result.features.length === 0) {
       // no information could be returned by the endpoint
       this.setState({ 
-        error: "for the given address no data could be queried",
-        loading: false
+        error: "For the given address no data could be queried"
       })
     }
 
     this.setState({ 
-      result: result,
-      loading: false
+      result: result
     });
   }
 
@@ -125,6 +130,8 @@ class QueryManager extends Component {
     // revert escaped slashes
     const readableQuery = this.state.query.replaceAll('%2F', '/')
 
+    console.log(this.state)
+
     return (
       <Fragment>
         <form onSubmit={this.handleSubmit}>
@@ -133,9 +140,9 @@ class QueryManager extends Component {
             type="text"
             key="inputQuery"
             placeholder="Gusshausstrasse 30"
-            className={classes.queryInput}
-            value={this.state.query}
-            onChange={this.handleQueryChange}
+            className={ classes.queryInput }
+            value={ this.state.query }
+            onChange={ this.handleQueryChange }
             variant="outlined"
             size="small"
             autoFocus 
@@ -147,22 +154,22 @@ class QueryManager extends Component {
             this.state.result.features.length !== 0 ? (
             // endpoint provided information to present
             <Fragment>
-              <Typography variant="h4" component="h2" gutterBottom> Result for {readableQuery} </Typography>
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+              <Typography variant="h4" component="h2" gutterBottom> Result for { this.state.result.geocoding.query.text } </Typography>
+              <TableContainer component={ Paper }>
+                <Table className={ classes.table } aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Geometry </TableCell>
+                      <TableCell colSpan={ 2 } className={ classes.headerTable }> Geometry </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell width={"40%"}>X</TableCell>
-                      <TableCell>{this.state.result.features[0].geometry.coordinates[0]}</TableCell>
+                      <TableCell width={ "40%" }>X</TableCell>
+                      <TableCell>{this.state.result.features[0].geometry.coordinates[0] }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Y</TableCell>
-                      <TableCell>{this.state.result.features[0].geometry.coordinates[1]}</TableCell>
+                      <TableCell width={ "40%" }>Y</TableCell>
+                      <TableCell>{ this.state.result.features[0].geometry.coordinates[1] }</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -172,65 +179,65 @@ class QueryManager extends Component {
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Properties </TableCell>
+                      <TableCell colSpan={ 2 } className={ classes.headerTable }> Properties </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell width={"40%"}>Postalcode</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.postalcode}</TableCell>
+                      <TableCell width={ "40%" }>Postalcode</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.postalcode }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Country</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.country}</TableCell>
+                      <TableCell width={ "40%" }>Country</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.country }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Country Code</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.country_a}</TableCell>
+                      <TableCell width={ "40%" }>Country Code</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.country_a }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Name</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.name}</TableCell>
+                      <TableCell width={ "40%" }>Name</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.name }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Street</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.street}</TableCell>
+                      <TableCell width={ "40%" }>Street</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.street }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Neighbourhood</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.neighbourhood}</TableCell>
+                      <TableCell width={ "40%" }>Neighbourhood</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.neighbourhood }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Region</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.region}</TableCell>
+                      <TableCell width={ "40%" }>Region</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.region }</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
 
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
+              <TableContainer component={ Paper }>
+                <Table className={ classes.table } aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell colSpan={2} className={classes.headerTable}> Pelias Metadata </TableCell>
+                      <TableCell colSpan={ 2 } className={ classes.headerTable }> Pelias Metadata </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell width={"40%"}>Confidence</TableCell>
-                      <TableCell>{this.state.result.features[0].properties.confidence}</TableCell>
+                      <TableCell width={ "40%" }>Confidence</TableCell>
+                      <TableCell>{ this.state.result.features[0].properties.confidence }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Parsed text - postal code</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.postalcode}</TableCell>
+                      <TableCell width={ "40%" }>Parsed text - postal code</TableCell>
+                      <TableCell>{ this.state.result.geocoding.query.parsed_text.postalcode }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Parsed text - street</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.street}</TableCell>
+                      <TableCell width={ "40%" }>Parsed text - street</TableCell>
+                      <TableCell>{ this.state.result.geocoding.query.parsed_text.street }</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell width={"40%"}>Parsed text - housenumber</TableCell>
-                      <TableCell>{this.state.result.geocoding.query.parsed_text.housenumber}</TableCell>
+                      <TableCell width={ "40%" }>Parsed text - housenumber</TableCell>
+                      <TableCell>{ this.state.result.geocoding.query.parsed_text.housenumber }</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -241,7 +248,7 @@ class QueryManager extends Component {
              this.state.error ? (
               <ErrorSnackbar
                 onClose={() => this.setState({ error: null })}
-                message={this.state.error}
+                message={ this.state.error }
               />
              ) : ( <div></div>)
            )
