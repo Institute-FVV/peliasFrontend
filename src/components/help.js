@@ -64,7 +64,7 @@ class Help extends Component {
       {this.state.showModal && (
         <Modal
           className={ classes.modal }
-          onClose={() => history.goBack()}
+          onClose={ this.handleChange }
           open
         >
           <Card className={`${ classes.modalCard } ${ classes.marginTop }`}>
