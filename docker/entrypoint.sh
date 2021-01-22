@@ -4,4 +4,4 @@
 npm run build
 
 # publish app
-npm run start:server
+node src/server
