@@ -1,7 +1,12 @@
 {
   "name": "pelias-frontend",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
+  "license": "GNU General Public License v3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Institute-FVV/peliasFrontend"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
