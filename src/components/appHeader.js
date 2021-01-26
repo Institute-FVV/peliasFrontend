@@ -28,8 +28,8 @@ const styles = theme => ({
   link: {
     fontSize: '1.5em',
     color: 'white',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
     textDecoration: 'none'
   },
   text: {
@@ -80,6 +80,7 @@ class AppHeader extends Component {
 
           <Link className={ classes.link } to="/query">Forward</Link>
           <Link className={ classes.link } to="/reversequery">Reverse</Link>
+          <Link className={ classes.link } to="/upload">File Upload</Link>
 
           <Button 
             onClick={ this.handleChange }

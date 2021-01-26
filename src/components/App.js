@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 import AppHeader from './appHeader';
 import QueryManager from '../pages/queryManager';
 import ReverseQueryManager from '../pages/reverseQueryManager';
+import FileUpload from '../pages/fileUpload.js'
 
 const styles = theme => ({
   main: {
@@ -32,7 +33,8 @@ class App extends Component {
             <Route exact path="/query" component={ QueryManager } />
             <Route exact path="/reversequery" component={ ReverseQueryManager } />
             <Route exact path="/query/:query" component={ QueryManager } />
-            <Route exact path="/reversequery/:query" component={ReverseQueryManager } />
+            <Route exact path="/reversequery/:query" component={ ReverseQueryManager } />
+            <Route exact path="/upload" component={ FileUpload } />
           </main>
       </Fragment>
     )

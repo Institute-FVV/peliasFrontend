@@ -107,7 +107,7 @@ class ReverseQueryManager extends Component {
     if(result.features.length === 0) {
       // no information could be returned by the endpoint
       this.setState({ 
-        error: "for the given coordinates no data could be queried",
+        error: "For the given coordinates no data could be queried",
       })
     }
 
