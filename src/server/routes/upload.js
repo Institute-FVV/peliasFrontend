@@ -79,17 +79,21 @@ router.post('/upload', upload.single("document"), (req, res, next) => {
     neatCsv(content, { separator: SEPARATOR })
     .then(elements => {
         let urls = getPeliasUrls(elements, req.body.queryType)
-        
-        // even after injecting the ssl cert, somehow it doesn't allow it, so we are forced to disable ssl check
-        const agent = new https.Agent({  
-            rejectUnauthorized: false
-        });
 
-        // execute the requests using the concurrency manager bluebird
-        return Promise.map(urls, url => axios.get(url, {httpsAgent: agent}), { concurrency: MAX_PARALLEL_EXECUTIONS})
-        .then(data => {
-            return data
-        })
+        if(urls.length > 0) {
+            // even after injecting the ssl cert, somehow it doesn't allow it, so we are forced to disable ssl check
+            const agent = new https.Agent({  
+                rejectUnauthorized: false
+            });
+
+            // execute the requests using the concurrency manager bluebird
+            return Promise.map(urls, url => axios.get(url, {httpsAgent: agent}), { concurrency: MAX_PARALLEL_EXECUTIONS})
+            .then(data => {
+                return data
+            })
+        } else {
+            throw Error("Error when parsing document, no URLs could be generated")
+        }
     })
     .then(result => {
         let output = []

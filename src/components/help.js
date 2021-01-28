@@ -56,7 +56,7 @@ class Help extends Component {
   }
 
   render() {
-    const { classes, history } = this.props
+    const { classes } = this.props
     const APP_VERSION = process.env.REACT_APP_VERSION
 
     return (
