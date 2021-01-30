@@ -64,20 +64,6 @@ class FileUpload extends Component {
         body: body
       });
 
-      // api returns result as csv, have to quickly store it as blb
-      const blob = await response.blob();
-      const newBlob = new Blob(["\ufeff", blob]);
-      const blobUrl = window.URL.createObjectURL(newBlob);
-  
-      // execute click on blob to download i 
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.setAttribute('download', `result.csv`);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(blob);
-
       this.setState({
         loading: false
       })
@@ -85,10 +71,24 @@ class FileUpload extends Component {
       if(response.ok === false) {
         console.error(response)
         this.setState({
-          error: { message: "Error when talking with API. Error message: " + response.statusText}
+          error: { message: "Error when uploading the document, please check the .csv format and try again"}
         })
 
         return response
+      } else {
+        // api returns result as csv, have to quickly store it as blb
+        const blob = await response.blob();
+        const newBlob = new Blob(["\ufeff", blob]);
+        const blobUrl = window.URL.createObjectURL(newBlob);
+    
+        // execute click on blob to download i 
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.setAttribute('download', `${this.state.document.name}_result.csv`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(blob);
       }
     } catch (error) {
       console.error(error);
