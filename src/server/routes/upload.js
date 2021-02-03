@@ -23,14 +23,14 @@ function getPeliasUrls(elements, queryType) {
         let url = PELIAS_BACKEND + "/search?text="
         elements.forEach(element => {
             if(element.address !== undefined) {
-                urls.push(url + element.address)
+                urls.push(url + encodeURIComponent(element.address))
             }
         })
     } else {
         let url = PELIAS_BACKEND + "/reverse?"
         elements.forEach(element => {
             if(element.lon !== undefined && element.lat !== undefined) {
-                urls.push(url + "point.lon=" + element.lon + "&point.lat=" + element.lat)
+                urls.push(url + encodeURIComponent("point.lon=" + element.lon + "&point.lat=" + element.lat))
             }
         })
     }
@@ -108,7 +108,7 @@ router.post('/upload', upload.single("document"), (req, res, next) => {
             output.push(result.data)
         }
 
-        output = convertPeliasOutput(output)
+        output = convertPeliasOutput(output, req.body.queryType)
 
         // convert resulting json and return file
         converter.json2csv(output, (err, csv) => {

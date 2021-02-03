@@ -19,7 +19,6 @@ app.use(bodyParser.json({limit: "50mb", extended: true}));
 // serve static folder for production
 let publicFolder = path.resolve(__dirname, '..')
 publicFolder = path.resolve(publicFolder, '..')
-app.use('/public', express.static(path.join(publicFolder, 'public')));
 app.use('/api', api)
 
 // serve static folder for production
