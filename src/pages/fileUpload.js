@@ -136,8 +136,8 @@ class FileUpload extends Component {
     return (
       <Fragment>
         <Typography variant="h4">CSV Upload</Typography>
-        <Typography> Example File forward <a target="_blank" href={`${window.location.origin}/public/ExampleCSV_forward.csv`}>ExampleCSV_forward.csv</a></Typography>
-        <Typography> Example File reverse <a target="_blank" href={`${window.location.origin}/public/ExampleCSV_reverse.csv`}>ExampleCSV_reverse.csv</a></Typography>
+        <Typography> Example File forward <a target="_blank" href={`${window.location.origin}/ExampleCSV_forward.csv`}>ExampleCSV_forward.csv</a></Typography>
+        <Typography> Example File reverse <a target="_blank" href={`${window.location.origin}/ExampleCSV_reverse.csv`}>ExampleCSV_reverse.csv</a></Typography>
         
         <form encType="multipart/form-data" className={ classes.form } onSubmit={ this.onSubmit }>
           <label htmlFor="btn-upload">
