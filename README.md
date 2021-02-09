@@ -10,6 +10,7 @@ Using react in combination with the material design to create a intuitive UI.
 
 ![StandardQuery](documentation/exampleQuery.PNG)
 ![ReverseQuery](documentation/exampleReverseQuery.PNG)
+![FileUploadQuery](documentation/exampleFileUploadQuery.PNG)
 
 ### Backend
 Pelias docker infrastructure.
