@@ -44,7 +44,11 @@ const styles = theme => ({
     },
   },
   toolBar: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    backgroundColor: "#5485AB",
+  },
+  image: {
+    height: '40px'
   }
 })
 
@@ -72,6 +76,7 @@ class AppHeader extends Component {
       <AppBar position="static">
         <Toolbar className={ classes.toolBar }>
           <Button color="inherit" component={Link} to="/">
+          <img className={ classes.image } src={`${window.location.origin}/images/fvv-header.png`} alt="FVV header image"/>
             <MapIcon/>
             <Typography variant="h6" color="inherit">
               Geoencoding 
