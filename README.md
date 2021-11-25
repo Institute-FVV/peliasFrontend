@@ -1,4 +1,6 @@
-# Simple pelias frontend
+# Simple pelias frontend  
+[![Publish pelias frontend docker images](https://github.com/Institute-FVV/peliasFrontend/actions/workflows/action.yml/badge.svg?branch=master)](https://github.com/Institute-FVV/peliasFrontend/actions/workflows/action.yml)  
+
 Provides a simple and easy to use frontend for the powerful pelias backend.  
 Both reverse and standard queries are possible.  
 ## Scope
