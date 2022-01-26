@@ -44,25 +44,36 @@ function convertPeliasOutput(responses, queryType) {
 
     responses.forEach(response => {
         let element = {}
+        if(response.features[0]) {
+            element.postalCode = response.features[0].properties.postalcode || ""
+            element.country = response.features[0].properties.country || ""
+            element.countryCode = response.features[0].properties.country_a || ""
+            element.name = response.features[0].properties.name || ""
+            element.street = response.features[0].properties.street || ""
+            element.neighbourhood = response.features[0].properties.neighbourhood || ""
+            element.region = response.features[0].properties.region || ""
 
-        element.postalCode = response.features[0].properties.postalcode || ""
-        element.country = response.features[0].properties.country || ""
-        element.countryCode = response.features[0].properties.country_a || ""
-        element.name = response.features[0].properties.name || ""
-        element.street = response.features[0].properties.street || ""
-        element.neighbourhood = response.features[0].properties.neighbourhood || ""
-        element.region = response.features[0].properties.region || ""
+            element.confidence = response.features[0].properties.confidence || ""
 
-        element.confidence = response.features[0].properties.confidence || ""
+            // forward query has some more interesting information
+            if(queryType === "Forward") {
+                element.lon = response.features[0].geometry.coordinates[1] || ""
+                element.lat = response.features[0].geometry.coordinates[0] || ""
 
-        // forward query has some more interesting information
-        if(queryType === "Forward") {
-            element.lon = response.features[0].geometry.coordinates[1] || ""
-            element.lat = response.features[0].geometry.coordinates[0] || ""
+                element.parsedText_PostalCode = response.geocoding.query.parsed_text.postalcode || ""
+                element.parsedText_Street = response.geocoding.query.parsed_text.street || ""
+                element.parsedText_Housenumber = response.geocoding.query.parsed_text.housenumber || ""
+            }
+        } else {
+            element.postalCode = "not found"
+            element.country = "not found"
+            element.countryCode = "not found"
+            element.name = "not found"
+            element.street = "not found"
+            element.neighbourhood = "not found"
+            element.region = "not found"
 
-            element.parsedText_PostalCode = response.geocoding.query.parsed_text.postalcode || ""
-            element.parsedText_Street = response.geocoding.query.parsed_text.street || ""
-            element.parsedText_Housenumber = response.geocoding.query.parsed_text.housenumber || ""
+            element.confidence = 0
         }
 
         result.push(element)
