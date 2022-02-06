@@ -30,7 +30,7 @@ function getPeliasUrls(elements, queryType) {
         let url = PELIAS_BACKEND + "/reverse?"
         elements.forEach(element => {
             if(element.lon !== undefined && element.lat !== undefined) {
-                urls.push(url + encodeURIComponent("point.lon=" + element.lon + "&point.lat=" + element.lat))
+                urls.push(url + "point.lon=" + parseFloat(element.lon) + "&point.lat=" + parseFloat(element.lat))
             }
         })
     }
@@ -57,8 +57,8 @@ function convertPeliasOutput(responses, queryType) {
 
             // forward query has some more interesting information
             if(queryType === "Forward") {
-                element.lon = response.features[0].geometry.coordinates[1] || ""
-                element.lat = response.features[0].geometry.coordinates[0] || ""
+                element.lon = response.features[0].geometry.coordinates[0] || ""
+                element.lat = response.features[0].geometry.coordinates[1] || ""
 
                 element.parsedText_PostalCode = response.geocoding.query.parsed_text.postalcode || ""
                 element.parsedText_Street = response.geocoding.query.parsed_text.street || ""
