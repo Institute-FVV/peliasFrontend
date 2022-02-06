@@ -20,7 +20,7 @@
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "final-form": "^4.20.4",
-    "json-2-csv": "^3.16.1",
+    "json-2-csv": "^3.17.0",
     "lodash": "^4.17.21",
     "material-table": "^1.69.3",
     "moment": "^2.29.1",
