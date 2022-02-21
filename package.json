@@ -18,7 +18,7 @@
     "body-parse": "^0.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.2",
+    "express": "^4.17.3",
     "final-form": "^4.20.4",
     "json-2-csv": "^3.17.0",
     "lodash": "^4.17.21",
