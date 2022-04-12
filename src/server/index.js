@@ -26,9 +26,12 @@ publicFolder = path.resolve(__dirname, '..')
 publicFolder = path.resolve(publicFolder, '..')
 app.use(express.static(path.join(publicFolder, 'build')));
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`geoencoding listening at http://localhost:${port}`)
 })
+
+// keep session allive if very large files are being processed
+server.keepAliveTimeout = 61 * 1000;
 
 // forward all requests to the react app
 app.get('*', function(req, res) {
